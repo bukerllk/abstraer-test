@@ -17,7 +17,7 @@ class Contacts extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('zip_code');
-            $table->string('coordinates');
+            $table->string('coordinates')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
