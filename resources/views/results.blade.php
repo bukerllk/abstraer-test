@@ -1,5 +1,5 @@
-<div class="row fases-tables text-center">
-    <div class="col-sm-6">
+<div class="row fases-tables text-center" >
+    <div class="col-sm-6" style="float: left;">
         <table>
             <thead>
             <tr>
@@ -17,7 +17,7 @@
             </tbody>
         </table>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6" style="float: left;">
         <table>
             <thead>
             <tr>
