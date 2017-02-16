@@ -5,8 +5,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
-
+        <title>Eduard Russy</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ URL::asset('js/scripts.js') }}"></script>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
@@ -49,6 +50,12 @@
                 font-size: 84px;
             }
 
+            .subtitle {
+                font-size: 25px;
+                padding-left: 100px;
+                padding-right: 100px;
+            }
+
             .links > a {
                 color: #636b6f;
                 padding: 0 25px;
@@ -69,10 +76,13 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    MULU
+                    EDUARD RUSSY www.abstraer.com
                 </div>
+                <p class="subtitle">
+                    Esta es una prueba que consiste en ingresar dos códigos postales en los campos, lo que hace el sistema es que convierte esos ZIP codes en coordenadas guarda y busca dentro de la base de datos en la cual hay una tabla con contactos también con ZIP codes, esto lo que hace es que trae y categoriza los contactos por agente de acuerdo con la distancia.
+                </p>
 
-                <form method="post"  action="{{ url('/result') }}">
+                <form method="post" id="formGo" action="{{ url('/result') }}">
                     {{ csrf_field() }}
                     <div class="form-group">
                         <label for="email">Zip Code Agent 1:</label>
@@ -84,7 +94,7 @@
                         <input type="text" class="form-control" id="agent2" name="agent2">
                     </div>
 
-                    <button type="submit" class="btn btn-default">Match</button>
+                    <button onclick="validateForm();" type="button" class="btn btn-default go">Gooo!</button>
                 </form>
 
 

@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 
 Route::post('/result', 'Controller@match');
+Route::get('/getAjax', 'Controller@getAgentsList');

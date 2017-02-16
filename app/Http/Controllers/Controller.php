@@ -10,11 +10,23 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Mulu\Agent;
 use Mulu\Contact;
 
+
 class Controller extends BaseController
 {
 
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    private $api;
+    private $miles;
+    private $kilometers;
+    private $nautical;
+
+    function __construct(){
+        $this->api = 'http://maps.googleapis.com/maps/api/geocode/json?address=';
+        $this->miles=1.1515;
+        $this->kilometers=1.609344;
+        $this->nautical=0.8684;
+    }
 
     /**
      * Get coordinates of the users.
@@ -32,7 +44,7 @@ class Controller extends BaseController
         // Set some options - we are passing in a useragent too here
         curl_setopt_array($curl, [
             CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL            => 'http://maps.googleapis.com/maps/api/geocode/json?address='.$zipCode,
+            CURLOPT_URL            => $this->api.$zipCode,
             CURLOPT_USERAGENT      => 'Codular Sample cURL Request'
         ]);
         // Send the request & save response to $resp
@@ -62,21 +74,17 @@ class Controller extends BaseController
         $coor_agent_one = $this->getCoordinates($zip_agent_one);
 
         // save agent one
-        $agent_one=new Agent();
-        $agent_one->name='Agent One';
-        $agent_one->zip_code=$zip_agent_one;
-        $agent_one->coordinates=$coor_agent_one;
-        $agent_one->save();
+        $agent=new Agent();
+        $agent->saveAgent('Agent One',$zip_agent_one,$coor_agent_one);
+        
 
         // get coodinates for the agent two
         $coor_agent_two = $this->getCoordinates($zip_agent_two);
 
         // save agent two
-        $agent_two=new Agent();
-        $agent_two->name='Agent Two';
-        $agent_two->zip_code=$zip_agent_two;
-        $agent_two->coordinates=$coor_agent_two;
-        $agent_two->save();
+        $agent=new Agent();
+        $agent->saveAgent('Agent Two',$zip_agent_two,$coor_agent_two);
+
 
         // get contacts list
         $contacts = Contact::all();
@@ -162,16 +170,26 @@ class Controller extends BaseController
         $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
         $dist = acos($dist);
         $dist = rad2deg($dist);
-        $miles = $dist * 60 * 1.1515;
+        $miles = $dist * 60 * $this->miles;
         $unit = strtoupper($unit);
 
         if ($unit == "K") {
-            return ($miles * 1.609344);
+            return ($miles * $this->kilometers);
         } else if ($unit == "N") {
-            return ($miles * 0.8684);
+            return ($miles * $this->nautical);
         } else {
             return $miles;
         }
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getAgentsList()
+    {
+        $list = Agent::all();
+        return response()->json($list);
     }
 
 }
